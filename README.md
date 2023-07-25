@@ -1,2 +1,3 @@
 # MicroServicoMTU
-Repositório destinado a implementação de um micro serviço referente a uma máquina de turing universal
+Trabalho da Disciplina de Teoria a Computação 
+Alunos: Rafael Brunini Pereira 10A, Gustavo Soares Silva 10A
