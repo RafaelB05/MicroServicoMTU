@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+    my-network:
+        driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+  my-app:
+    build:
+       context: .
+       dockerfile: Dockerfile
+    container_name: my-app
+    restart: always
+    ports:
+      - "8000:8000"
+    deploy:
+        resources:
+            limits:
+              cpus: "0.1"
+    networks:
+      - my-network
+    depends_on:
+      - postgres
+      - rabbitmq
+  # POSTGRES
+  postgres:
+    image: postgres:13.1
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my-network
+  # RABBIT MQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitMQ
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
